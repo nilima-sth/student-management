@@ -3,8 +3,10 @@ from odoo.exceptions import ValidationError
 
 
 class Student(models.Model):
+    
     _name = 'student.student'
     _description = 'Student Record'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string='Name', required=True)
     image_1920 = fields.Image(string='Photo')

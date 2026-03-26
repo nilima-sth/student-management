@@ -9,7 +9,6 @@
                 <field name="code"/>
                 <field name="duration_months"/>
                 <field name="fee"/>
-                <field name="active"/>
             </list>
         </field>
     </record>
@@ -26,7 +25,6 @@
                         <field name="description"/>
                         <field name="duration_months"/>
                         <field name="fee"/>
-                        <field name="active"/>
                     </group>
                 </sheet>
             </form>

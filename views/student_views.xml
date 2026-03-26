@@ -71,16 +71,15 @@
                 <button name="action_set_not_admitted" type="object" string="Set Not Admitted" class="btn-secondary" invisible="state == 'not_admitted'"/>
                 <field name="state" widget="statusbar"/>
             </header>
-
-            <!-- BODY -->
             <sheet>
                 <group>
-                    <group>
-                        <field name="image_1920" widget="image" class="oe_avatar"/>
-                    </group>
+                <field name="image_1920" widget="image" class="oe_avatar"/>
                     <group>
                         <field name="name"/>
                         <field name="date_of_birth"/>
+                    </group>
+                    <group>
+                        
                         <field name="age" readonly="1"/>
                         <field name="email"/>
                         <field name="course_ids" widget="many2many_tags"/>
@@ -89,8 +88,9 @@
                     </group>
                 </group>
             </sheet>
-
+        <chatter/>
         </form>
+        
     </field>
 </record>
 
