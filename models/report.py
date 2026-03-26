@@ -1,0 +1,27 @@
+from odoo import fields, models
+
+
+class StudentReport(models.Model):
+    _name = 'student.report'
+    _description = 'Student Report'
+
+    name = fields.Char(string='Report Reference', required=True)
+    student_id = fields.Many2one('student.student', string='Student', required=True)
+    report_date = fields.Date(string='Report Date', default=fields.Date.context_today, required=True)
+    line_ids = fields.One2many('student.report.line', 'report_id', string='Report Lines', copy=True)
+    remarks = fields.Text(string='Remarks')
+    state = fields.Selection([
+        ('1', 'Draft'),
+        ('2', 'Confirmed')
+    ], string='Status', default='1')
+
+
+class StudentReportLine(models.Model):
+    _name = 'student.report.line'
+    _description = 'Student Report Line'
+
+    report_id = fields.Many2one('student.report', string='Report', required=True, ondelete='cascade')
+    course_id = fields.Many2one('student.course', string='Course', required=True)
+    full_marks = fields.Float(string='Full Marks', required=True, default=100.0)
+    pass_marks = fields.Float(string='Pass Marks', required=True, default=40.0)
+    obtained_marks = fields.Float(string='Obtained Marks', required=True, default=0.0)
