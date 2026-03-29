@@ -11,9 +11,10 @@ class Course(models.Model):
     duration_months = fields.Integer(string='Duration (Months)')
     fee = fields.Float(string='Course Fee')
     student_ids = fields.Many2many(
-        'student.student',
+        'res.partner',
         'student_course_rel',
         'course_id',
         'student_id',
-        string='Enrolled Students'
+        string='Enrolled Students',
+        domain=[('is_student', '=', True)]
     )

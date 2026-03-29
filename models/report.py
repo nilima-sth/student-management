@@ -6,7 +6,7 @@ class StudentReport(models.Model):
     _description = 'Student Report'
 
     name = fields.Char(string='Report Reference', required=True)
-    student_id = fields.Many2one('student.student', string='Student', required=True)
+    student_id = fields.Many2one('res.partner', string='Student', required=True, domain=[('is_student', '=', True)])
     report_date = fields.Date(string='Report Date', default=fields.Date.context_today, required=True)
     line_ids = fields.One2many('student.report.line', 'report_id', string='Report Lines')
     remarks = fields.Text(string='Remarks')

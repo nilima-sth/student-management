@@ -6,7 +6,7 @@
     'summary': 'Manage student records and courses efficiently.',
     'category': 'Education',
     'license': 'LGPL-3',
-    'depends': ['base', 'contacts'],
+    'depends': ['base', 'contacts', 'account'],
     'data': [
         'security/ir.model.access.csv',
         'views/course_views.xml',

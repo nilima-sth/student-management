@@ -2,21 +2,11 @@ from odoo import api, fields, models
 
 
 class Student(models.Model):
-    _name = 'student.student'
+    _inherit = 'res.partner'
     _description = 'Student Record'
 
-    partner_id = fields.Many2one(
-        'res.partner',
-        string='Contact',
-        readonly=True,
-        copy=False,
-        ondelete='cascade',
-    )
-    name = fields.Char(string='Name', required=True)
-    image_1920 = fields.Image(string='Photo')
     date_of_birth = fields.Date(string='Date of Birth')
     age = fields.Integer(string='Age', compute='_compute_age', store=True)
-    email = fields.Char(string='Email')
     enrollment_date = fields.Date(string='Enrollment Date')
     course_ids = fields.Many2many(
         'student.course',
@@ -27,7 +17,7 @@ class Student(models.Model):
     )
     is_adult = fields.Boolean(string='Is Adult', compute='_compute_is_adult', store=True)
 
-    state = fields.Selection([
+    student_state = fields.Selection([
         ('draft', 'Draft'),
         ('documents_pending', 'Documents Pending'),
         ('approved', 'Approved'),
@@ -36,41 +26,27 @@ class Student(models.Model):
         ('completed', 'Completed'),
         ('not_completed', 'Not Completed'),
         ('cancelled', 'Cancelled'),
-    ], string='Stage', default='draft')
+    ], string='Student Stage', default='draft')
 
     def action_admit(self):
-        self.write({'state': 'admitted'})
+        self.write({'student_state': 'admitted'})
 
     def action_mark_completed(self):
-        self.write({'state': 'completed'})
+        self.write({'student_state': 'completed'})
 
     def action_mark_not_completed(self):
-        self.write({'state': 'not_completed'})
+        self.write({'student_state': 'not_completed'})
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if vals.get('partner_id'):
-                partner = self.env['res.partner'].browse(vals['partner_id'])
-                partner.write(self._prepare_partner_vals(vals))
-            else:
-                partner = self.env['res.partner'].create(self._prepare_partner_vals(vals))
-                vals['partner_id'] = partner.id
+            # Mark as student when created through student form
+            if not vals.get('is_student'):
+                vals['is_student'] = True
+            # Set company_type to person by default for students
+            if not vals.get('company_type'):
+                vals['company_type'] = 'person'
         return super().create(vals_list)
-
-    def write(self, vals):
-        result = super().write(vals)
-        partner_vals = self._prepare_partner_vals(vals)
-        if partner_vals:
-            for student in self.filtered('partner_id'):
-                student.partner_id.write(partner_vals)
-        return result
-
-    def unlink(self):
-        partners = self.mapped('partner_id')
-        result = super().unlink()
-        partners.unlink()
-        return result
 
     @api.depends('date_of_birth')
     def _compute_age(self):
@@ -88,16 +64,3 @@ class Student(models.Model):
         for student in self:
             student.is_adult = (student.age or 0) >= 18
 
-    def _prepare_partner_vals(self, vals):
-        partner_vals = {'is_student': True}
-
-        if vals.get('name'):
-            partner_vals['name'] = vals['name']
-        if 'email' in vals:
-            partner_vals['email'] = vals['email']
-        if 'image_1920' in vals:
-            partner_vals['image_1920'] = vals['image_1920']
-
-        partner_vals.setdefault('company_type', 'person')
-        return partner_vals
-    

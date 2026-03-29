@@ -1,8 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Inherit Contact Form to add Student-specific fields -->
+    <record id="view_partner_form_inherit_student" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.student</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Add is_student field -->
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="is_student" invisible="1"/>
+            </xpath>
+
+            <!-- Hide Company/Individual selector on Student form -->
+            <xpath expr="//field[@name='company_type']" position="attributes">
+                <attribute name="invisible">is_student</attribute>
+            </xpath>
+
+            <!-- Hide business/contact fields on Student form -->
+            <xpath expr="//field[@name='company_name']" position="attributes">
+                <attribute name="invisible">is_student</attribute>
+            </xpath>
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="invisible">is_student</attribute>
+            </xpath>
+            <xpath expr="//field[@name='function']" position="attributes">
+                <attribute name="invisible">is_student</attribute>
+            </xpath>
+            <xpath expr="//field[@name='vat']" position="attributes">
+                <attribute name="invisible">is_student</attribute>
+            </xpath>
+            <xpath expr="//field[@name='website']" position="attributes">
+                <attribute name="invisible">is_student</attribute>
+            </xpath>
+
+            <!-- Hide smart buttons (Sales, Invoiced, etc.) for students -->
+            <xpath expr="//div[@name='button_box']" position="attributes">
+                <attribute name="invisible">is_student</attribute>
+            </xpath>
+
+            <!-- Hide Sales/Purchases and Invoicing tabs for students -->
+            <xpath expr="//page[@name='sales_purchases']" position="attributes">
+                <attribute name="invisible">is_student</attribute>
+            </xpath>
+
+            <!-- Add Student Information Notebook Page -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Student Information" invisible="not is_student">
+                    <group>
+                        <group string="Student Details">
+                            <field name="date_of_birth"/>
+                            <field name="age" readonly="1"/>
+                            <field name="is_adult" readonly="1"/>
+                            <field name="enrollment_date"/>
+                            <field name="course_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <!-- Add Header with Student State -->
+            <xpath expr="//form" position="inside">
+                <header>
+                    <button name="action_admit" string="Admit" type="object" class="oe_highlight"
+                        invisible="not is_student or student_state not in ['approved', 'documents_pending']"/>
+                    <button name="action_mark_completed" string="Completed" type="object"
+                        invisible="not is_student or student_state not in ['admitted', 'active', 'not_completed']"/>
+                    <button name="action_mark_not_completed" string="Not Completed" type="object"
+                        invisible="not is_student or student_state not in ['admitted', 'active', 'completed']"/>
+                    <field name="student_state" widget="statusbar" options="{'clickable': 1}"
+                        statusbar_visible="draft,documents_pending,approved,admitted,active,completed,not_completed,cancelled"
+                        invisible="not is_student"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Hide account-specific invoicing pages for students -->
+    <record id="view_partner_accounting_inherit_student" model="ir.ui.view">
+        <field name="name">res.partner.accounting.inherit.student</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='accounting']" position="attributes">
+                <attribute name="invisible">is_student or (not is_company and parent_id)</attribute>
+            </xpath>
+            <xpath expr="//page[@name='accounting_disabled']" position="attributes">
+                <attribute name="invisible">is_student or is_company or not parent_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- List View for Students -->
     <record id="view_student_tree" model="ir.ui.view">
         <field name="name">student.tree</field>
-        <field name="model">student.student</field>
+        <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
@@ -11,15 +102,16 @@
                 <field name="email"/>
                 <field name="course_ids" widget="many2many_tags"/>
                 <field name="enrollment_date"/>
-                <field name="state"/>
+                <field name="student_state"/>
                 <field name="is_adult"/>
             </list>
         </field>
     </record>
 
+    <!-- Kanban View for Students -->
     <record id="view_student_kanban" model="ir.ui.view">
         <field name="name">student.kanban</field>
-        <field name="model">student.student</field>
+        <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <kanban>
                 <field name="image_1920"/>
@@ -27,7 +119,7 @@
                 <field name="email"/>
                 <field name="date_of_birth"/>
                 <field name="age"/>
-                <field name="state"/>
+                <field name="student_state"/>
                 <field name="course_ids"/>
                 <templates>
                     <t t-name="card">
@@ -48,7 +140,7 @@
                                 DOB: <field name="date_of_birth"/>
                             </div>
                             <div>
-                                Status: <field name="state"/>
+                                Status: <field name="student_state"/>
                             </div>
                             <div class="mt-2">
                                 <field name="course_ids" widget="many2many_tags"/>
@@ -60,59 +152,31 @@
         </field>
     </record>
 
+    <!-- Search View for Students -->
+    <record id="view_student_search" model="ir.ui.view">
+        <field name="name">student.search</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <filter name="adult" string="Adults" domain="[('age','>=',18)]"/>
+                <filter name="active_students" string="Active" domain="[('student_state','=','active')]"/>
+                <filter name="completed_students" string="Completed" domain="[('student_state','=','completed')]"/>
+            </search>
+        </field>
+    </record>
 
-<record id="view_student_form" model="ir.ui.view">
-    <field name="name">student.form</field>
-    <field name="model">student.student</field>
-    <field name="arch" type="xml">
-        <form string="Student">
-            <header>
-                <button name="action_admit" string="Admit" type="object" class="oe_highlight"
-                    invisible="state not in ['approved', 'documents_pending']"/>
-                <button name="action_mark_completed" string="Completed" type="object"
-                    invisible="state not in ['admitted', 'active', 'not_completed']"/>
-                <button name="action_mark_not_completed" string="Not Completed" type="object"
-                    invisible="state not in ['admitted', 'active', 'completed']"/>
-                <field name="state" widget="statusbar" options="{'clickable': 1}" statusbar_visible="draft,documents_pending,approved,admitted,active,completed,not_completed,cancelled"/>
-            </header>
-            <sheet>
-                <group>
-                <field name="image_1920" widget="image" class="oe_avatar"/>
-                    <group>
-                        <field name="name"/>
-                        <field name="date_of_birth"/>
-                    </group>
-                    <group>
-                        
-                        <field name="age" readonly="1"/>
-                        <field name="email"/>
-                        <field name="course_ids" widget="many2many_tags"/>
-                        <field name="enrollment_date"/>
-                        <field name="is_adult" readonly="1"/>
-                    </group>
-                </group>
-            </sheet>
-        </form>
-    </field>
-</record>
-
-<record id="view_student_search" model="ir.ui.view">
-    <field name="name">student.search</field>
-    <field name="model">student.student</field>
-    <field name="arch" type="xml">
-        <search>
-            <field name="name"/>
-            <filter name="adult" string="Adults" domain="[('age','>=',18)]"/>
-            <filter name="active_students" string="Active" domain="[('state','=','active')]"/>
-            <filter name="completed_students" string="Completed" domain="[('state','=','completed')]"/>
-        </search>
-    </field>
-</record>
-
-<record id="action_student" model="ir.actions.act_window">
-    <field name="name">Students</field>
-    <field name="res_model">student.student</field>
-    <field name="view_mode">list,kanban,form</field>
-</record>
+    <!-- Action to Open Students (Contacts filtered by is_student) -->
+    <record id="action_student" model="ir.actions.act_window">
+        <field name="name">Students</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('is_student', '=', True)]</field>
+        <field name="context">{'default_is_student': True, 'default_company_type': 'person'}</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_student_tree')}),
+            (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_student_kanban')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('base.view_partner_form')})]"/>
+    </record>
 
 </odoo>
