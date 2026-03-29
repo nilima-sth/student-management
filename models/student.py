@@ -1,13 +1,16 @@
-from odoo import models, fields, api
-from odoo.exceptions import ValidationError
-
-
+from odoo import api, fields, models
 class Student(models.Model):
-    
+
     _name = 'student.student'
     _description = 'Student Record'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
 
+    partner_id = fields.Many2one(
+        'res.partner',
+        string='Contact',
+        readonly=True,
+        copy=False,
+        ondelete='cascade',
+    )
     name = fields.Char(string='Name', required=True)
     image_1920 = fields.Image(string='Photo')
     date_of_birth = fields.Date(string='Date of Birth')
@@ -25,15 +28,39 @@ class Student(models.Model):
     
     
     state = fields.Selection([
-        ('not_admitted', 'Not Admitted'),
-        ('admitted', 'Admitted')
-    ], string='Status', default='not_admitted')
+        ('draft', 'Draft'),
+        ('documents_pending', 'Documents Pending'),
+        ('approved', 'Approved'),
+        ('admitted', 'Admitted'),
+        ('active', 'Active'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ], string='Stage', default='draft')
 
-    def action_admit(self):
-        self.write({'state': 'admitted'})
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('partner_id'):
+                partner = self.env['res.partner'].browse(vals['partner_id'])
+                partner.write(self._prepare_partner_vals(vals))
+            else:
+                partner = self.env['res.partner'].create(self._prepare_partner_vals(vals))
+                vals['partner_id'] = partner.id
+        return super().create(vals_list)
 
-    def action_set_not_admitted(self):
-        self.write({'state': 'not_admitted'})
+    def write(self, vals):
+        result = super().write(vals)
+        partner_vals = self._prepare_partner_vals(vals)
+        if partner_vals:
+            for student in self.filtered('partner_id'):
+                student.partner_id.write(partner_vals)
+        return result
+
+    def unlink(self):
+        partners = self.mapped('partner_id')
+        result = super().unlink()
+        partners.unlink()
+        return result
 
     @api.depends('date_of_birth')
     def _compute_age(self):
@@ -51,11 +78,16 @@ class Student(models.Model):
         for student in self:
             student.is_adult = (student.age or 0) >= 18
 
-    @api.constrains('date_of_birth')
-    def _check_date_of_birth(self):
-        today = fields.Date.today()
-        for student in self:
-            if student.date_of_birth and student.date_of_birth > today:
-                raise ValidationError("Date of Birth cannot be in the future.")
+    def _prepare_partner_vals(self, vals):
+        partner_vals = {'is_student': True}
 
+        if vals.get('name'):
+            partner_vals['name'] = vals['name']
+        if 'email' in vals:
+            partner_vals['email'] = vals['email']
+        if 'image_1920' in vals:
+            partner_vals['image_1920'] = vals['image_1920']
 
+        partner_vals.setdefault('company_type', 'person')
+        return partner_vals
+    
