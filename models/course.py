@@ -10,7 +10,7 @@ class Course(models.Model):
     description = fields.Text(string='Description')
     duration_months = fields.Integer(string='Duration (Months)')
     fee = fields.Float(string='Course Fee')
-    student_ids=fields.Many2many(
+    student_ids = fields.Many2many(
         'student.student',
         'student_course_rel',
         'course_id',

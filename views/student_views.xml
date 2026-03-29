@@ -67,7 +67,13 @@
     <field name="arch" type="xml">
         <form string="Student">
             <header>
-                <field name="state" widget="statusbar" options="{'clickable': 1}" statusbar_visible="draft,documents_pending,approved,admitted,active,completed,cancelled"/>
+                <button name="action_admit" string="Admit" type="object" class="oe_highlight"
+                    invisible="state not in ['approved', 'documents_pending']"/>
+                <button name="action_mark_completed" string="Completed" type="object"
+                    invisible="state not in ['admitted', 'active', 'not_completed']"/>
+                <button name="action_mark_not_completed" string="Not Completed" type="object"
+                    invisible="state not in ['admitted', 'active', 'completed']"/>
+                <field name="state" widget="statusbar" options="{'clickable': 1}" statusbar_visible="draft,documents_pending,approved,admitted,active,completed,not_completed,cancelled"/>
             </header>
             <sheet>
                 <group>

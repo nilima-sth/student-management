@@ -1,6 +1,7 @@
 from odoo import api, fields, models
-class Student(models.Model):
 
+
+class Student(models.Model):
     _name = 'student.student'
     _description = 'Student Record'
 
@@ -25,8 +26,7 @@ class Student(models.Model):
         string='Courses'
     )
     is_adult = fields.Boolean(string='Is Adult', compute='_compute_is_adult', store=True)
-    
-    
+
     state = fields.Selection([
         ('draft', 'Draft'),
         ('documents_pending', 'Documents Pending'),
@@ -34,8 +34,18 @@ class Student(models.Model):
         ('admitted', 'Admitted'),
         ('active', 'Active'),
         ('completed', 'Completed'),
+        ('not_completed', 'Not Completed'),
         ('cancelled', 'Cancelled'),
     ], string='Stage', default='draft')
+
+    def action_admit(self):
+        self.write({'state': 'admitted'})
+
+    def action_mark_completed(self):
+        self.write({'state': 'completed'})
+
+    def action_mark_not_completed(self):
+        self.write({'state': 'not_completed'})
 
     @api.model_create_multi
     def create(self, vals_list):
