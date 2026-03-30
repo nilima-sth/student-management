@@ -72,7 +72,7 @@
             <xpath expr="//sheet" position="before">
                 <header>
                     <button name="action_admit" string="Admit" type="object" class="btn-primary"
-                        invisible="not is_student or student_state in ['admitted', 'cancelled']"/>
+                        invisible="not is_student or student_state == 'admitted'"/>
                     <button name="action_cancel_student" string="Cancel" type="object"
                         invisible="not is_student or student_state == 'cancelled'"/>
                     <field name="student_state" widget="statusbar"
@@ -127,29 +127,32 @@
                 <field name="student_state"/>
                 <field name="course_ids"/>
                 <templates>
-                    <t t-name="card">
-                        <div class="oe_kanban_global_click">
-                            <div class="mb-2">
-                                <field name="image_1920" widget="image" class="oe_kanban_avatar" options="{'size': [96, 96]}"/>
-                            </div>
-                            <div class="fw-bold fs-5">
-                                <field name="name"/>
-                            </div>
-                            <div class="text-muted">
-                                <field name="email"/>
-                            </div>
-                            <div>
-                                Age: <field name="age"/>
-                            </div>
-                            <div>
-                                DOB: <field name="date_of_birth"/>
-                            </div>
-                            <div>
-                                Status: <field name="student_state"/>
-                            </div>
-                            <div class="mt-2">
-                                <field name="course_ids" widget="many2many_tags"/>
-                            </div>
+                    <t t-name="card" class="flex-row">
+                        <div class="oe_kanban_global_click d-flex w-100">
+                            <aside class="o_kanban_aside_full">
+                                <field name="image_1920" alt="Student image" class="o_kanban_image_fill w-100"
+                                       widget="image" options="{'img_class': 'object-fit-cover', 'size': [96, 96]}"/>
+                            </aside>
+                            <main class="ps-2">
+                                <div class="mb-1 fw-bold fs-5 text-truncate">
+                                    <field name="name"/>
+                                </div>
+                                <div t-if="record.email.raw_value" class="text-muted text-truncate">
+                                    <field name="email"/>
+                                </div>
+                                <div t-if="record.age.raw_value or record.age.raw_value == 0">
+                                    Age: <field name="age"/>
+                                </div>
+                                <div t-if="record.date_of_birth.raw_value">
+                                    DOB: <field name="date_of_birth"/>
+                                </div>
+                                <div t-if="record.student_state.raw_value">
+                                    Status: <field name="student_state"/>
+                                </div>
+                                <div t-if="record.course_ids.raw_value" class="mt-2">
+                                    <field name="course_ids" widget="many2many_tags"/>
+                                </div>
+                            </main>
                         </div>
                     </t>
                 </templates>

@@ -1,5 +1,4 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
 
 
 class Student(models.Model):
@@ -32,12 +31,6 @@ class Student(models.Model):
     def action_admit(self):
         self.write({'student_state': 'admitted'})
 
-    def action_mark_completed(self):
-        self.write({'student_state': 'completed'})
-
-    def action_mark_not_completed(self):
-        self.write({'student_state': 'not_completed'})
-
     def action_cancel_student(self):
         self.write({'student_state': 'cancelled'})
 
@@ -62,12 +55,19 @@ class Student(models.Model):
                 student.age = today.year - student.date_of_birth.year
                 if not birthday_passed:
                     student.age -= 1
+                if student.age < 0:
+                    student.age = 0
             else:
                 student.age = 0
 
-    @api.constrains('date_of_birth')
-    def _check_date_of_birth_positive_age(self):
+    @api.onchange('date_of_birth')
+    def _onchange_date_of_birth_warning(self):
         today = fields.Date.today()
-        for student in self:
-            if student.date_of_birth and student.date_of_birth > today:
-                raise ValidationError("Only positive age is allowed. Date of Birth cannot be in the future.")
+        if self.date_of_birth and self.date_of_birth > today:
+            self.age = 0
+            return {
+                'warning': {
+                    'title': 'Warning',
+                    'message': 'Future date of birth is not allowed. Age has been set to 0.',
+                }
+            }
