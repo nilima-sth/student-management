@@ -1,11 +1,14 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
+
+
 class Student(models.Model):
     _inherit = 'res.partner'
     _description = 'Student Record'
 
     date_of_birth = fields.Date(string='Date of Birth')
     age = fields.Integer(string='Age', compute='_compute_age', store=True)
-    enrollment_date = fields.Date(string='Enrollment Date')
+    enrollment_date = fields.Date(string='Enrollment Date', default=fields.Date.today)
     course_ids = fields.Many2many(
         'student.course',
         'student_course_rel',
@@ -13,6 +16,7 @@ class Student(models.Model):
         'course_id',
         string='Courses'
     )
+    guardian_ids = fields.One2many('student.guardian', 'student_id', string='Guardians')
 
     student_state = fields.Selection([
         ('draft', 'Draft'),
@@ -60,3 +64,10 @@ class Student(models.Model):
                     student.age -= 1
             else:
                 student.age = 0
+
+    @api.constrains('date_of_birth')
+    def _check_date_of_birth_positive_age(self):
+        today = fields.Date.today()
+        for student in self:
+            if student.date_of_birth and student.date_of_birth > today:
+                raise ValidationError("Only positive age is allowed. Date of Birth cannot be in the future.")

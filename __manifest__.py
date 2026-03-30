@@ -11,9 +11,11 @@
         'security/ir.model.access.csv',
         'views/course_views.xml',
         'views/student_views.xml',
+        'views/guardian_views.xml',
         'views/student_report_views.xml',
         'views/menu.xml',
     ],
+    'images': ['static/description/icon.png'],
     'installable': True,
     'application': True,
 }
