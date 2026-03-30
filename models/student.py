@@ -1,6 +1,4 @@
 from odoo import api, fields, models
-
-
 class Student(models.Model):
     _inherit = 'res.partner'
     _description = 'Student Record'
@@ -15,7 +13,6 @@ class Student(models.Model):
         'course_id',
         string='Courses'
     )
-    is_adult = fields.Boolean(string='Is Adult', compute='_compute_is_adult', store=True)
 
     student_state = fields.Selection([
         ('draft', 'Draft'),
@@ -37,13 +34,14 @@ class Student(models.Model):
     def action_mark_not_completed(self):
         self.write({'student_state': 'not_completed'})
 
+    def action_cancel_student(self):
+        self.write({'student_state': 'cancelled'})
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            # Mark as student when created through student form
             if not vals.get('is_student'):
                 vals['is_student'] = True
-            # Set company_type to person by default for students
             if not vals.get('company_type'):
                 vals['company_type'] = 'person'
         return super().create(vals_list)
@@ -53,14 +51,12 @@ class Student(models.Model):
         today = fields.Date.today()
         for student in self:
             if student.date_of_birth:
-                student.age = today.year - student.date_of_birth.year - (
-                    (today.month, today.day) < (student.date_of_birth.month, student.date_of_birth.day)
+                birthday_passed = (today.month, today.day) >= (
+                    student.date_of_birth.month,
+                    student.date_of_birth.day,
                 )
+                student.age = today.year - student.date_of_birth.year
+                if not birthday_passed:
+                    student.age -= 1
             else:
                 student.age = 0
-
-    @api.depends('age')
-    def _compute_is_adult(self):
-        for student in self:
-            student.is_adult = (student.age or 0) >= 18
-
