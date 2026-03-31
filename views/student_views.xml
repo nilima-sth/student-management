@@ -2,9 +2,9 @@
 <odoo>
       <record id="view_partner_form_inherit_student" model="ir.ui.view"> <!--Inheriting the partner form-->
         <field name="name">res.partner.form.inherit.student</field>
-        <field name="model">res.partner</field>
+        <field name="model">res.partner</field> <!--The view shall look like contact form-->
         <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="arch" type="xml">
+        <field name="arch" type="xml">  <!--defining the structure-->
             <xpath expr="//field[@name='category_id']" position="after">
                 <field name="is_student" invisible="1"/>
             </xpath>
@@ -18,7 +18,7 @@
             <xpath expr="//field[@name='parent_id']" position="attributes">
                 <attribute name="invisible">is_student</attribute>
             </xpath>
-            <xpath expr="//field[@name='function']" position="attributes">
+            <xpath expr="//field[@name='function']" position="attributes"> <!--job position-->
                 <attribute name="invisible">is_student</attribute>
             </xpath>
             <xpath expr="//field[@name='vat']" position="attributes">
@@ -30,7 +30,7 @@
             <xpath expr="//field[@name='category_id']" position="attributes">
                 <attribute name="invisible">is_student</attribute>
             </xpath>
-            <xpath expr="//div[@name='button_box']" position="attributes">
+            <xpath expr="//div[@name='button_box']" position="attributes"> <!--smart buttons-->
                 <attribute name="invisible">is_student</attribute>
             </xpath>
             <xpath expr="//page[@name='sales_purchases']" position="attributes">
@@ -47,7 +47,7 @@
                 <field name="course_ids" widget="many2many_tags" invisible="not is_student"/>
             </xpath>
 
-            <xpath expr="//notebook" position="inside">
+            <xpath expr="//notebook" position="inside"> <!--tab containers-->
                 <page string="Guardian Details" name="guardian_details" invisible="not is_student">
                     <field name="guardian_ids" context="{'default_student_id': id}">
                         <list editable="bottom">
