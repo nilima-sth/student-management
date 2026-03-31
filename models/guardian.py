@@ -1,6 +1,4 @@
 from odoo import fields, models
-
-
 class StudentGuardian(models.Model):
     _name = 'student.guardian'
     _description = 'Student Guardian'
@@ -9,11 +7,11 @@ class StudentGuardian(models.Model):
     student_id = fields.Many2one(
         'res.partner',
         string='Student',
-        required=True,
-        ondelete='cascade',
-        domain=[('is_student', '=', True)],
+        required=True, #You cannot create a guardian without selecting a student.
+        ondelete='cascade', #If the student is deleted → automatically delete the guardian.
+        domain=[('is_student', '=', True)], #This is a filter
     )
-    relationship = fields.Selection(
+    relationship = fields.Selection(  
         [
             ('father', 'Father'),
             ('mother', 'Mother'),

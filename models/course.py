@@ -1,6 +1,4 @@
 from odoo import models, fields
-
-
 class Course(models.Model):
     _name = 'student.course'
     _description = 'Student Course'

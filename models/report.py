@@ -1,6 +1,5 @@
 from odoo import fields, models, api
 
-
 class StudentReport(models.Model):
     _name = 'student.report'
     _description = 'Student Report'
