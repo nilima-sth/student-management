@@ -23,13 +23,15 @@ class Student(models.Model):
         ('approved', 'Approved'),
         ('admitted', 'Admitted'),
         ('active', 'Active'),
-        ('completed', 'Completed'),
-        ('not_completed', 'Not Completed'),
+        ('alumni', 'Alumni'),
         ('cancelled', 'Cancelled'),
     ], string='Student Stage', default='draft')
 
     def action_admit(self):
         self.write({'student_state': 'admitted'})
+
+    def action_alumni(self):
+        self.write({'student_state': 'alumni'})
 
     def action_cancel_student(self):
         self.write({'student_state': 'cancelled'})
