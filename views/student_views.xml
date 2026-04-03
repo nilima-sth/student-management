@@ -172,6 +172,14 @@
         </field>
     </record>
 
+    <record id="view_student_map" model="ir.ui.view">
+        <field name="name">student.map</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <map res_partner="id"/>
+        </field>
+    </record>
+
     <record id="view_student_search" model="ir.ui.view">
         <field name="name">student.search</field>
         <field name="model">res.partner</field>
@@ -188,7 +196,7 @@
     <record id="action_student" model="ir.actions.act_window">
         <field name="name">Students</field>
         <field name="res_model">res.partner</field>
-        <field name="view_mode">list,kanban,form,calendar</field>
+        <field name="view_mode">list,kanban,form,calendar,map</field>
         <field name="search_view_id" ref="view_student_search"/>
         <field name="domain">[('is_student', '=', True)]</field>
         <field name="context" eval="{'default_is_student': True, 'default_company_type': 'person', 'default_country_id': ref('base.np')}"/>
@@ -196,7 +204,8 @@
             (0, 0, {'view_mode': 'list', 'view_id': ref('view_student_tree')}),
             (0, 0, {'view_mode': 'kanban', 'view_id': ref('view_student_kanban')}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('base.view_partner_form')}),
-            (0, 0, {'view_mode': 'calendar', 'view_id': ref('view_student_calendar')})]"/>
+            (0, 0, {'view_mode': 'calendar', 'view_id': ref('view_student_calendar')}),
+            (0, 0, {'view_mode': 'map', 'view_id': ref('view_student_map')})]"/>
     </record>
 
 </odoo>

@@ -73,3 +73,4 @@ class Student(models.Model):
                     'message': 'Future date of birth is not allowed. Age has been set to 0.',
                 }
             }
+
