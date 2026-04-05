@@ -44,6 +44,7 @@
                 <field name="date_of_birth" invisible="not is_student"/>
                 <field name="age" readonly="1" invisible="not is_student"/>
                 <field name="enrollment_date" invisible="not is_student"/>
+                <field name="classroom_id" invisible="not is_student"/>
                 <field name="course_ids" widget="many2many_tags" invisible="not is_student"/>
             </xpath>
 

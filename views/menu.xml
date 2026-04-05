@@ -21,9 +21,21 @@
               action="action_guardian"
               sequence="25"/>
 
+    <menuitem id="menu_student_classroom"
+              name="Classrooms"
+              parent="menu_student_root"
+              action="action_student_classroom"
+              sequence="35"/>
+
+    <menuitem id="menu_student_attendance"
+              name="Attendance"
+              parent="menu_student_root"
+              action="action_student_attendance"
+              sequence="40"/>
+
     <menuitem id="menu_student_report"
               name="Report Cards"
               parent="menu_student_root"
               action="action_student_report"
-              sequence="30"/>
+              sequence="45"/>
 </odoo>

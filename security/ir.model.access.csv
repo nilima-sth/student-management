@@ -3,3 +3,6 @@ access_student_course_user,student.course user,model_student_course,base.group_u
 access_student_report_user,student.report user,model_student_report,base.group_user,1,1,1,1
 access_student_report_line_user,student.report.line user,model_student_report_line,base.group_user,1,1,1,1
 access_student_guardian_user,student.guardian user,model_student_guardian,base.group_user,1,1,1,1
+access_student_classroom_user,student.classroom user,model_student_classroom,base.group_user,1,1,1,1
+access_student_attendance_user,student.attendance user,model_student_attendance,base.group_user,1,1,1,1
+access_student_attendance_line_user,student.attendance.line user,model_student_attendance_line,base.group_user,1,1,1,1
