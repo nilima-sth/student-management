@@ -30,6 +30,9 @@
         <field name="model">student.report</field>
         <field name="arch" type="xml">
             <form string="Student Report">
+                    <header>
+                        <button name="%(student_management.report_student_report_action)d" string="Print" type="action" class="oe_highlight"/>
+                    </header>
                 <sheet>
                     <group>
                         <field name="name"/>

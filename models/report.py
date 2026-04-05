@@ -13,6 +13,18 @@ class StudentReport(models.Model):
         ('1', 'Draft'),
         ('2', 'Confirmed')
     ], string='Status', default='1')
+    total_obtained = fields.Float(string='Total Obtained', compute='_compute_total_obtained')
+
+    @api.depends('line_ids.obtained_marks')
+    def _compute_total_obtained(self):
+        for rec in self:
+            total = 0.0
+            for line in rec.line_ids:
+                try:
+                    total += float(line.obtained_marks or 0.0)
+                except Exception:
+                    total += 0.0
+            rec.total_obtained = total
 
 
 class StudentReportLine(models.Model):

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_student_report_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div class="header" style="text-align: center; margin-bottom: 10px;">
+                        <img src="/student_management/static/description/icon.png" alt="Shrestha College Logo" style="max-height:80px;"/>
+                        <h2>Shrestha College</h2>
+                        <h4>Student Report</h4>
+                    </div>
+
+                    <table class="table table-sm" style="width:100%; border-collapse: collapse;">
+                        <tr>
+                            <td><strong>Report Ref:</strong> <span t-esc="o.name"/></td>
+                            <td><strong>Date:</strong> <span t-esc="o.report_date"/></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>Student:</strong> <span t-esc="o.student_id.name"/></td>
+                        </tr>
+                    </table>
+
+                    <br/>
+
+                    <table class="table table-sm" style="width:100%; border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid #000; padding:4px;"><strong>Course</strong></th>
+                                <th style="border: 1px solid #000; padding:4px;"><strong>Full Marks</strong></th>
+                                <th style="border: 1px solid #000; padding:4px;"><strong>Pass Marks</strong></th>
+                                <th style="border: 1px solid #000; padding:4px;"><strong>Obtained</strong></th>
+                                <th style="border: 1px solid #000; padding:4px;"><strong>Result</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="o.line_ids" t-as="l">
+                                <tr>
+                                    <td style="border: 1px solid #000; padding:4px;" t-esc="l.course_id.name"/>
+                                    <td style="border: 1px solid #000; padding:4px;" t-esc="l.full_marks"/>
+                                    <td style="border: 1px solid #000; padding:4px;" t-esc="l.pass_marks"/>
+                                    <td style="border: 1px solid #000; padding:4px;" t-esc="l.obtained_marks"/>
+                                    <td style="border: 1px solid #000; padding:4px;"> <t t-esc="l.result and 'Pass' or 'Fail'"/> </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <br/>
+                    <br/>
+                    <div style="text-align: right;">
+                        <strong>Total Obtained Marks: </strong>
+                        <span t-esc="o.total_obtained"/>
+                    </div>
+                    <br/>
+                    <div><strong>Remarks:</strong></div>
+                    <div t-raw="o.remarks or ''"/>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <record id="report_student_report_action" model="ir.actions.report">
+        <field name="name">Student Report</field>
+        <field name="model">student.report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">student_management.report_student_report_document</field>
+        <field name="print_report_name">%(object.name)s</field>
+    </record>
+
+</odoo>
