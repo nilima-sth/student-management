@@ -15,6 +15,7 @@
         'views/guardian_views.xml',
         'views/classroom_views.xml',
         'views/attendance_views.xml',
+        'views/student_id_card_wizard_views.xml',
         'views/report_templates.xml',
         'views/student_report_views.xml',
         'views/menu.xml',

@@ -6,4 +6,5 @@ from . import res_partner
 from . import classroom
 from . import attendance
 from . import guardian
+from . import student_id_card_wizard
 

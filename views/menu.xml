@@ -58,7 +58,7 @@
     <menuitem id="menu_student_report_id_card"
               name="Student ID Card"
               parent="menu_student_report"
-              action="action_student"
+              action="action_student_id_card_wizard"
               sequence="15"/>
 
     <menuitem id="menu_student_report_mid_term"
