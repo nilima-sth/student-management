@@ -84,3 +84,12 @@ class Student(models.Model):
                 }
             }
 
+    def unlink(self):
+        students = self.filtered('is_student')
+        if students:
+            students.write({'active': False})
+        others = self - students
+        if others:
+            return super(Student, others).unlink()
+        return True
+

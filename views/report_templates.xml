@@ -5,77 +5,49 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <div class="page" style="display:flex;justify-content:center;padding-top:20px;">
-                    <IdentityCard template="Student_ID_v1" theme="Blue_Outline"
-                        style="width:320px;min-height:560px;border:2px solid #4A90E2;font-family:monospace;color:#4A90E2;background:#ffffff;box-sizing:border-box;display:flex;flex-direction:column;">
+                    <div style="width:320px;min-height:520px;border:2px solid #2f69b1;border-radius:10px;background:#ffffff;box-sizing:border-box;font-family:monospace;color:#16365f;display:flex;flex-direction:column;overflow:hidden;">
+                        <div style="padding:14px 14px 10px 14px;border-bottom:2px solid #2f69b1;">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+                                <div style="flex:1;">
+                                    <div style="font-size:17px;font-weight:700;letter-spacing:0.4px;">STUDENT ID CARD</div>
+                                    <div style="font-size:12px;margin-top:2px;">Student Management</div>
+                                </div>
+                                  <div style="width:54px;height:54px;border:1px solid #2f69b1;padding:3px;box-sizing:border-box;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#ffffff;">
+                                     <img t-if="o.company_id and o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Institution Logo"
+                                         style="width:100%;height:100%;object-fit:contain;"/>
+                                     <span t-if="not (o.company_id and o.company_id.logo)" style="font-size:9px;color:#2f69b1;text-align:center;line-height:1.1;">LOGO</span>
+                                  </div>
+                            </div>
+                        </div>
 
-                        <Header style="padding:16px;">
-                            <Title alignment="center" color="#4A90E2" font-style="monospace"
-                                style="text-align:center;font-size:16px;margin-bottom:20px;">
-                                STUDENT IDENTITY CARD
-                            </Title>
-
-                            <LogoBox type="placeholder"
-                                style="width:140px;height:50px;border:2px solid #4A90E2;margin:0 auto 20px auto;display:flex;align-items:center;justify-content:center;text-align:center;">
-                                COLLEGE LOGO
-                            </LogoBox>
-
-                            <IdentityMedia style="width:160px;height:120px;border:2px solid #4A90E2;margin-bottom:15px;padding:8px;box-sizing:border-box;overflow:hidden;">
+                        <div style="padding:12px 14px;display:flex;gap:18px;align-items:flex-start;">
+                            <div style="min-width:96px;width:96px;height:112px;border:2px solid #2f69b1;border-radius:6px;overflow:hidden;background:#f5f9ff;">
                                 <img t-if="o.image_1920" t-att-src="image_data_uri(o.image_1920)" alt="Student Photo"
-                                    style="width:100%;height:100%;object-fit:cover;"/>
-                                <t t-if="not o.image_1920">
-                                    STUDENT<br/>PHOTO
-                                </t>
-                            </IdentityMedia>
+                                     style="width:100%;height:100%;object-fit:cover;"/>
+                                <div t-if="not o.image_1920" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#2f69b1;">PHOTO</div>
+                            </div>
+                            <div style="flex:1;min-width:150px;font-size:12px;line-height:1.6;">
+                                <div style="margin-bottom:4px;"><strong>Name:</strong> <span t-esc="o.name or '-'"/></div>
+                                <div style="margin-bottom:4px;"><strong>Roll No:</strong> <span t-esc="o.roll_no or '-'"/></div>
+                                <div style="margin-bottom:4px;"><strong>Program:</strong> <span t-esc="', '.join(o.course_ids.mapped('name')) or '-'"/></div>
+                                <div style="margin-bottom:4px;"><strong>Section:</strong> <span t-esc="o.section or '-'"/></div>
+                                <div><strong>Batch:</strong> <span t-esc="o.classroom_id.name if o.classroom_id else '-'"/></div>
+                            </div>
+                        </div>
 
-                            <PrimaryInfo>
-                                <div style="margin-bottom:4px;">
-                                    Name:<span t-esc="o.name" style="margin-left:8px;"/>
-                                </div>
-                                <div>
-                                    Address:<span t-esc="', '.join(filter(None, [o.street, o.street2, o.city]))" style="margin-left:8px;"/>
-                                </div>
-                            </PrimaryInfo>
-                        </Header>
+                        <div style="border-top:1px solid #2f69b1;"></div>
 
-                        <Divider style="border-top:2px solid #4A90E2;"/>
+                        <div style="padding:12px 14px 10px 14px;font-size:12px;line-height:1.5;flex:1;">
+                            <div><strong>Contact:</strong> <span t-esc="o.phone or o.mobile or '-'"/></div>
+                            <div><strong>Email:</strong> <span t-esc="o.email or '-'"/></div>
+                            <div><strong>Address:</strong> <span t-esc="', '.join(filter(None, [o.street, o.street2, o.city, o.zip])) or '-'"/></div>
+                            <div><strong>Validity:</strong> <span t-esc="o.student_state or '-'"/></div>
+                        </div>
 
-                        <StudentDetailsMenu style="padding:16px;line-height:1.5;">
-                            <Entry id="program" label="Program: " value="{program_title}">
-                                Program:<span t-esc="', '.join(o.course_ids.mapped('name'))" style="margin-left:8px;"/>
-                            </Entry>
-                            <Entry id="section" label="Section: " value="{section_id}">
-                                Section:<span t-esc="o.section or ''" style="margin-left:8px;"/>
-                            </Entry>
-                            <Entry id="roll_no" label="Roll No: " value="{roll_number}">
-                                Roll No:<span t-esc="o.roll_no or ''" style="margin-left:8px;"/>
-                            </Entry>
-                            <Entry id="contact" label="Contact: " value="{phone_number}">
-                                Contact:<span t-esc="o.phone or o.mobile or ''" style="margin-left:8px;"/>
-                            </Entry>
-                            <Entry id="address_alt" label="Address: " value="{permanent_address}">
-                                Address:<span t-esc="', '.join(filter(None, [o.street, o.street2, o.city]))" style="margin-left:8px;"/>
-                            </Entry>
-                            <Entry id="email" label="Email: " value="{email_address}">
-                                Email:<span t-esc="o.email or ''" style="margin-left:8px;"/>
-                            </Entry>
-                            <Entry id="validity" label="Validity: " value="{expiry_date}">
-                                Validity:<span t-esc="o.student_state or ''" style="margin-left:8px;"/>
-                            </Entry>
-                        </StudentDetailsMenu>
-
-                        <AppIcons style="display:flex;justify-content:center;gap:10px;padding:8px 16px 12px 16px;">
-                            <img src="/student_management/static/description/icon.png" alt="App Icon"
-                                style="width:22px;height:22px;border:1px solid #4A90E2;padding:2px;box-sizing:border-box;"/>
-                            <img src="/student_management/static/description/icon.png" alt="App Icon"
-                                style="width:22px;height:22px;border:1px solid #4A90E2;padding:2px;box-sizing:border-box;"/>
-                            <img src="/student_management/static/description/icon.png" alt="App Icon"
-                                style="width:22px;height:22px;border:1px solid #4A90E2;padding:2px;box-sizing:border-box;"/>
-                        </AppIcons>
-
-                        <Footer>
-                            <BorderStrip height="24px" style="border-top:2px solid #4A90E2;height:24px;margin-top:auto;"/>
-                        </Footer>
-                    </IdentityCard>
+                        <div style="padding:8px 14px;border-top:1px solid #2f69b1;background:#2f69b1;color:#ffffff;text-align:center;font-size:11px;">
+                            www.yourcollege.edu
+                        </div>
+                    </div>
                 </div>
             </t>
         </t>
