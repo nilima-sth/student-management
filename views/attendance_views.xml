@@ -8,6 +8,7 @@
                 <field name="name"/>
                 <field name="date"/>
                 <field name="classroom_id"/>
+                <field name="subject_id"/>
                 <field name="present_count"/>
                 <field name="absent_count"/>
             </list>
@@ -24,13 +25,14 @@
                         <field name="name"/>
                         <field name="date"/>
                         <field name="classroom_id"/>
+                        <field name="subject_id"/>
                         <field name="teacher_id"/>
                         <field name="present_count" readonly="1"/>
                         <field name="absent_count" readonly="1"/>
                     </group>
                     <field name="line_ids">
-                        <list editable="bottom">
-                            <field name="student_id"/>
+                        <list editable="bottom" create="0" delete="0">
+                            <field name="student_id" readonly="1"/>
                             <field name="present"/>
                             <field name="remarks"/>
                         </list>
@@ -48,6 +50,7 @@
                 <field name="name"/>
                 <field name="date"/>
                 <field name="classroom_id"/>
+                <field name="subject_id"/>
             </search>
         </field>
     </record>
@@ -60,6 +63,7 @@
                 <field name="name"/>
                 <field name="date"/>
                 <field name="classroom_id"/>
+                <field name="subject_id"/>
                 <field name="teacher_id"/>
                 <field name="present_count"/>
                 <field name="absent_count"/>
@@ -72,6 +76,7 @@
                             <div class="o_kanban_secondary">
                                 <div><strong>Date:</strong> <field name="date"/></div>
                                 <div><strong>Classroom:</strong> <field name="classroom_id"/></div>
+                                <div><strong>Subject:</strong> <field name="subject_id"/></div>
                                 <div><strong>Marked By:</strong> <field name="teacher_id"/></div>
                                 <div><field name="present_count"/> Present / <field name="absent_count"/> Absent</div>
                             </div>

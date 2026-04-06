@@ -6,6 +6,14 @@ class StudentClassroom(models.Model):
     _description = 'Student Classroom'
 
     name = fields.Char(string='Classroom Name', required=True)
+    program = fields.Selection(
+        [
+            ('bim', 'BIM'),
+            ('csit', 'CSIT'),
+        ],
+        string='Program',
+        default='csit',
+    )
     semester = fields.Selection(
         [
             ('1', 'Semester 1'),
@@ -26,11 +34,12 @@ class StudentClassroom(models.Model):
         string='Class Teacher',
         domain=[('is_student', '=', False)],
     )
+    course_id = fields.Many2one('student.course', string='Course')
     subject_ids = fields.Many2many(
-        'student.course',
-        'classroom_course_rel',
+        'student.subject',
+        'classroom_subject_rel',
         'classroom_id',
-        'course_id',
+        'subject_id',
         string='Subjects',
     )
     student_ids = fields.One2many('res.partner', 'classroom_id', string='Students')

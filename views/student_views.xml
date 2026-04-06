@@ -40,12 +40,14 @@
                 <attribute name="invisible">is_student</attribute>
             </xpath>
 
-            <xpath expr="//field[@name='function']" position="before">
+<xpath expr="//field[@name='function']" position="before">
                 <field name="date_of_birth" invisible="not is_student"/>
                 <field name="age" readonly="1" invisible="not is_student"/>
+                <field name="roll_no" invisible="not is_student"/>
                 <field name="enrollment_date" invisible="not is_student"/>
                 <field name="classroom_id" invisible="not is_student"/>
                 <field name="course_ids" widget="many2many_tags" invisible="not is_student"/>
+                <field name="subject_ids" widget="many2many_tags" invisible="not is_student"/>
             </xpath>
 
             <xpath expr="//notebook" position="inside"> <!--tab containers-->
@@ -105,10 +107,12 @@
         <field name="arch" type="xml">
             <list default_order="name asc">
                 <field name="name"/>
+                <field name="roll_no"/>
                 <field name="date_of_birth"/>
                 <field name="age"/>
                 <field name="email"/>
                 <field name="course_ids" widget="many2many_tags"/>
+                <field name="subject_ids" widget="many2many_tags"/>
                 <field name="enrollment_date"/>
                 <field name="student_state"/>
             </list>
@@ -150,8 +154,9 @@
                                 <div t-if="record.student_state.raw_value">
                                     Status: <field name="student_state"/>
                                 </div>
-                                <div t-if="record.course_ids.raw_value" class="mt-2">
+                                <div t-if="record.course_ids.raw_value or record.subject_ids.raw_value" class="mt-2">
                                     <field name="course_ids" widget="many2many_tags"/>
+                                    <field name="subject_ids" widget="many2many_tags"/>
                                 </div>
                             </main>
                         </div>

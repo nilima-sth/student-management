@@ -9,33 +9,73 @@
               action="action_student"
               sequence="10"/>
 
-    <menuitem id="menu_course"
-              name="Courses"
-              parent="menu_student_root"
-              action="action_course"
-              sequence="20"/>
-
     <menuitem id="menu_guardian"
               name="Guardians"
               parent="menu_student_root"
               action="action_guardian"
-              sequence="25"/>
+              sequence="20"/>
+
+    <menuitem id="menu_course"
+              name="Courses"
+              parent="menu_student_root"
+              action="action_course"
+              sequence="30"/>
+
+    <menuitem id="menu_subject"
+              name="Subjects"
+              parent="menu_student_root"
+              action="action_subject"
+              sequence="40"/>
+
+    <menuitem id="menu_student_batch"
+              name="Batch"
+              parent="menu_student_root"
+              sequence="50"/>
+
+    <menuitem id="menu_student_batch_bim"
+              name="BIM"
+              parent="menu_student_batch"
+              action="action_student_student_batch_bim"
+              sequence="10"/>
+
+    <menuitem id="menu_student_batch_csit"
+              name="CSIT"
+              parent="menu_student_batch"
+              action="action_student_student_batch_csit"
+              sequence="20"/>
 
     <menuitem id="menu_student_classroom"
               name="Classrooms"
               parent="menu_student_root"
               action="action_student_classroom"
-              sequence="35"/>
+              sequence="60"/>
 
     <menuitem id="menu_student_attendance"
               name="Attendance"
               parent="menu_student_root"
               action="action_student_attendance"
-              sequence="40"/>
+              sequence="70"/>
 
     <menuitem id="menu_student_report"
               name="Report Cards"
               parent="menu_student_root"
+              sequence="80"/>
+
+    <menuitem id="menu_student_report_all"
+              name="All Reports"
+              parent="menu_student_report"
               action="action_student_report"
-              sequence="45"/>
+              sequence="10"/>
+
+    <menuitem id="menu_student_report_mid_term"
+              name="Mid-Term"
+              parent="menu_student_report"
+              action="action_student_report_mid_term"
+              sequence="20"/>
+
+    <menuitem id="menu_student_report_pre_board"
+              name="Pre-board"
+              parent="menu_student_report"
+              action="action_student_report_pre_board"
+              sequence="30"/>
 </odoo>

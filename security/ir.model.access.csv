@@ -6,3 +6,4 @@ access_student_guardian_user,student.guardian user,model_student_guardian,base.g
 access_student_classroom_user,student.classroom user,model_student_classroom,base.group_user,1,1,1,1
 access_student_attendance_user,student.attendance user,model_student_attendance,base.group_user,1,1,1,1
 access_student_attendance_line_user,student.attendance.line user,model_student_attendance_line,base.group_user,1,1,1,1
+access_student_subject_user,student.subject user,model_student_subject,base.group_user,1,1,1,1

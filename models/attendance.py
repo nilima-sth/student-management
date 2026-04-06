@@ -6,8 +6,13 @@ class StudentAttendance(models.Model):
     _description = 'Student Attendance'
 
     name = fields.Char(string='Attendance Reference', required=True, default='New')
-    date = fields.Date(string='Date', default=fields.Date.context_today, required=True)
+    date = fields.Datetime(string='Date & Time', default=fields.Datetime.now, required=True)
     classroom_id = fields.Many2one('student.classroom', string='Classroom')
+    subject_id = fields.Many2one(
+        'student.subject',
+        string='Subject',
+        required=True,
+    )
     teacher_id = fields.Many2one(
         'res.partner',
         string='Marked By',
@@ -23,13 +28,25 @@ class StudentAttendance(models.Model):
             rec.present_count = sum(1 for line in rec.line_ids if line.present)
             rec.absent_count = len(rec.line_ids) - rec.present_count
 
-    @api.onchange('classroom_id')
-    def _onchange_classroom_id(self):
-        if self.classroom_id:
-            lines = []
-            for student in self.classroom_id.student_ids:
-                lines.append((0, 0, {'student_id': student.id, 'present': False}))
-            self.line_ids = lines
+    @api.onchange('subject_id', 'classroom_id')
+    def _onchange_subject_or_classroom(self):
+        for rec in self:
+            rec.line_ids = [(5, 0, 0)]
+            if not rec.subject_id:
+                continue
+
+            domain = [
+                ('is_student', '=', True),
+                ('subject_ids', 'in', rec.subject_id.id),
+            ]
+            if rec.classroom_id:
+                domain.append(('classroom_id', '=', rec.classroom_id.id))
+
+            students = self.env['res.partner'].search(domain, order='name asc')
+            rec.line_ids = [
+                (0, 0, {'student_id': student.id, 'present': False})
+                for student in students
+            ]
 
 
 class StudentAttendanceLine(models.Model):

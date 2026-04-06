@@ -10,6 +10,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/course_views.xml',
+        'views/subject_views.xml',
         'views/student_views.xml',
         'views/guardian_views.xml',
         'views/classroom_views.xml',

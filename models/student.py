@@ -5,6 +5,7 @@ class Student(models.Model):
     _inherit = 'res.partner'
     _description = 'Student Record'
 
+    roll_no = fields.Char(string='Roll No')
     date_of_birth = fields.Date(string='Date of Birth')
     age = fields.Integer(string='Age', compute='_compute_age', store=True)
     enrollment_date = fields.Date(string='Enrollment Date', default=fields.Date.today)
@@ -14,6 +15,15 @@ class Student(models.Model):
         'student_id',
         'course_id',
         string='Courses'
+    )
+    section = fields.Char(string='Section')
+    subject_ids = fields.Many2many(
+        'student.subject',
+        'student_subject_rel',
+        'student_id',
+        'subject_id',
+        string='Subjects',
+        domain="[('course_id', 'in', course_ids)]",
     )
     guardian_ids = fields.One2many('student.guardian', 'student_id', string='Guardians')
 
