@@ -5,53 +5,77 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
                 <div class="page" style="display:flex;justify-content:center;">
-                    <IDCardTemplate width="300" height="450" aspect-ratio="2:3" alignment="center" color="#4A90E2" font-style="monospace"
-                        style="width:300px;height:450px;border:2px solid #4A90E2;border-radius:10px;padding:12px;box-sizing:border-box;font-family:monospace;color:#2b3a55;">
+                    <IdentityCard template="Student_ID_v1" theme="Blue_Outline"
+                        style="width:320px;height:500px;border:2px solid #4A90E2;border-radius:14px;padding:16px;box-sizing:border-box;font-family:monospace;color:#1f3250;background:#ffffff;">
 
-                        <Header alignment="center" color="#4A90E2" font-style="monospace" style="text-align:center;">
+                        <Header style="text-align:center;margin-bottom:14px;">
                             <Title alignment="center" color="#4A90E2" font-style="monospace"
-                                style="font-weight:700;font-size:16px;letter-spacing:0.5px;margin-bottom:10px;">STUDENT IDENTITY CARD</Title>
-
-                            <div style="display:flex;justify-content:space-between;gap:10px;align-items:stretch;margin-bottom:10px;">
-                                <LogoPlaceholder alignment="center" color="#4A90E2" font-style="monospace"
-                                    style="flex:1;border:1px solid #4A90E2;min-height:82px;display:flex;align-items:center;justify-content:center;">
-                                    <img src="/student_management/static/description/icon.png" alt="Institution Logo" style="max-width:56px;max-height:56px;"/>
-                                </LogoPlaceholder>
-                                <PhotoPlaceholder alignment="center" color="#4A90E2" font-style="monospace"
-                                    style="width:118px;height:145px;border:1px solid #4A90E2;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-                                    <img t-if="o.image_1920" t-att-src="image_data_uri(o.image_1920)" alt="Student Photo" style="width:100%;height:100%;object-fit:cover;"/>
-                                    <span t-if="not o.image_1920" style="font-size:11px;color:#4A90E2;">STUDENT PHOTO</span>
-                                </PhotoPlaceholder>
-                            </div>
+                                style="font-size:16px;font-weight:700;letter-spacing:0.6px;color:#4A90E2;margin-bottom:8px;">
+                                STUDENT IDENTITY CARD
+                            </Title>
+                            <LogoBox type="placeholder" style="width:90px;height:44px;margin:0 auto;border:1px dashed #4A90E2;display:flex;align-items:center;justify-content:center;color:#4A90E2;font-size:11px;">
+                                COLLEGE LOGO
+                            </LogoBox>
                         </Header>
 
-                        <TopInfoGroup alignment="left" color="#4A90E2" font-style="monospace" style="font-size:12px;line-height:1.35;margin-bottom:8px;">
-                            <Field label="Name:" t-att-value="o.name"><strong>Name:</strong> <span t-esc="o.name"/></Field>
-                            <Field label="Address:" t-att-value="(', '.join(filter(None, [o.street, o.street2, o.city, o.zip])))">
-                                <strong>Address:</strong>
-                                <span t-esc="', '.join(filter(None, [o.street, o.street2, o.city, o.zip]))"/>
-                            </Field>
-                        </TopInfoGroup>
+                        <IdentityMedia style="display:flex;justify-content:center;margin-bottom:14px;">
+                            <PhotoFrame type="placeholder" style="width:140px;height:170px;border:1px dashed #4A90E2;display:flex;align-items:center;justify-content:center;color:#4A90E2;font-size:11px;">
+                                <img t-if="o.image_1920" t-att-src="image_data_uri(o.image_1920)" alt="Student Photo"
+                                    style="width:100%;height:100%;object-fit:cover;"/>
+                                <span t-if="not o.image_1920">STUDENT PHOTO</span>
+                            </PhotoFrame>
+                        </IdentityMedia>
 
-                        <StudentDetails alignment="left" color="#4A90E2" font-style="monospace"
-                            style="border-top:1px solid #4A90E2;padding-top:8px;font-size:12px;line-height:1.4;">
-                            <Field label="Program:" t-att-value="', '.join(o.course_ids.mapped('name'))"><strong>Program:</strong> <span t-esc="', '.join(o.course_ids.mapped('name'))"/></Field>
-                            <Field label="Section:" t-att-value="o.section or ''"><strong>Section:</strong> <span t-esc="o.section or '-'"/></Field>
-                            <Field label="Roll No:" t-att-value="o.roll_no or ''"><strong>Roll No:</strong> <span t-esc="o.roll_no or '-'"/></Field>
-                            <Field label="Contact:" t-att-value="o.phone or o.mobile or ''"><strong>Contact:</strong> <span t-esc="o.phone or o.mobile or '-'"/></Field>
-                            <Field label="Address (Permanent):" t-att-value="(', '.join(filter(None, [o.street, o.street2, o.city, o.zip])))">
-                                <strong>Address (Permanent):</strong>
-                                <span t-esc="', '.join(filter(None, [o.street, o.street2, o.city, o.zip]))"/>
+                        <PrimaryInfo style="margin-bottom:12px;">
+                            <Field id="name_top" label="Name: " value="{student_name}"
+                                style="display:block;margin-bottom:6px;">
+                                <strong style="color:#4A90E2;">Name:</strong>
+                                <span t-esc="o.name" style="margin-left:4px;"/>
                             </Field>
-                            <Field label="Email:" t-att-value="o.email or ''"><strong>Email:</strong> <span t-esc="o.email or '-'"/></Field>
-                            <Field label="Validity:" t-att-value="o.student_state or ''"><strong>Validity:</strong> <span t-esc="o.student_state or '-'"/></Field>
-                        </StudentDetails>
+                            <Field id="address_top" label="Address: " value="{local_address}"
+                                style="display:block;">
+                                <strong style="color:#4A90E2;">Address:</strong>
+                                <span t-esc="', '.join(filter(None, [o.street, o.street2, o.city, o.zip]))" style="margin-left:4px;"/>
+                            </Field>
+                        </PrimaryInfo>
 
-                        <Footer style="margin-top:auto;padding-top:8px;">
-                            <FooterBar alignment="center" color="#4A90E2" font-style="monospace"
-                                style="height:6px;border-top:1px solid #4A90E2;"></FooterBar>
+                        <Divider style="border-top:1px solid #4A90E2;margin:10px 0;"/>
+
+                        <StudentDetailsMenu style="border:1px solid #4A90E2;padding:10px;border-radius:8px;background:#f9fcff;">
+                            <Entry id="program" label="Program: " value="{program_title}" style="display:block;margin-bottom:8px;">
+                                <strong style="color:#4A90E2;">Program:</strong>
+                                <span t-esc="', '.join(o.course_ids.mapped('name'))" style="margin-left:4px;"/>
+                            </Entry>
+                            <Entry id="section" label="Section: " value="{section_id}" style="display:block;margin-bottom:8px;">
+                                <strong style="color:#4A90E2;">Section:</strong>
+                                <span t-esc="o.section or '-'" style="margin-left:4px;"/>
+                            </Entry>
+                            <Entry id="roll_no" label="Roll No: " value="{roll_number}" style="display:block;margin-bottom:8px;">
+                                <strong style="color:#4A90E2;">Roll No:</strong>
+                                <span t-esc="o.roll_no or '-'" style="margin-left:4px;"/>
+                            </Entry>
+                            <Entry id="contact" label="Contact: " value="{phone_number}" style="display:block;margin-bottom:8px;">
+                                <strong style="color:#4A90E2;">Contact:</strong>
+                                <span t-esc="o.phone or o.mobile or '-'" style="margin-left:4px;"/>
+                            </Entry>
+                            <Entry id="address_alt" label="Address: " value="{permanent_address}" style="display:block;margin-bottom:8px;">
+                                <strong style="color:#4A90E2;">Address:</strong>
+                                <span t-esc="', '.join(filter(None, [o.street, o.street2, o.city, o.zip]))" style="margin-left:4px;"/>
+                            </Entry>
+                            <Entry id="email" label="Email: " value="{email_address}" style="display:block;margin-bottom:8px;">
+                                <strong style="color:#4A90E2;">Email:</strong>
+                                <span t-esc="o.email or '-'" style="margin-left:4px;"/>
+                            </Entry>
+                            <Entry id="validity" label="Validity: " value="{expiry_date}" style="display:block;margin-bottom:0;">
+                                <strong style="color:#4A90E2;">Validity:</strong>
+                                <span t-esc="o.student_state or '-'" style="margin-left:4px;"/>
+                            </Entry>
+                        </StudentDetailsMenu>
+
+                        <Footer style="margin-top:auto;padding-top:10px;">
+                            <BorderStrip height="10px" style="display:block;width:100%;background:#ffffff;border-top:1px solid #4A90E2;"/>
                         </Footer>
-                    </IDCardTemplate>
+                    </IdentityCard>
                 </div>
             </t>
         </t>

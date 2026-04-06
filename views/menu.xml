@@ -55,6 +55,12 @@
               action="action_student_report"
               sequence="10"/>
 
+    <menuitem id="menu_student_report_id_card"
+              name="Student ID Card"
+              parent="menu_student_report"
+              action="action_student"
+              sequence="15"/>
+
     <menuitem id="menu_student_report_mid_term"
               name="Mid-Term"
               parent="menu_student_report"

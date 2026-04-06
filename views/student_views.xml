@@ -78,6 +78,8 @@
                         invisible="not is_student or student_state == 'admitted'"/>
                     <button name="action_cancel_student" string="Cancel" type="object"
                         invisible="not is_student or student_state == 'cancelled'"/>
+                    <button name="%(student_management.report_student_id_card_action)d" string="Print ID Card"
+                        type="action" class="btn-secondary" invisible="not is_student"/>
                     <field name="student_state" widget="statusbar"
                         options="{'clickable': 1}"
                         statusbar_visible="admitted,completed,not_completed,cancelled"
