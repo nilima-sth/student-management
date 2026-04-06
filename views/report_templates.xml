@@ -6,7 +6,7 @@
             <t t-foreach="docs" t-as="o">
                 <div class="page">
                     <div class="header" style="text-align: center; margin-bottom: 10px;">
-                        <img src="/student_management/static/description/icon.png" alt="Shrestha College Logo" style="max-height:80px;"/>
+                        <img src="/student_management/static/description/icon.png" alt="Shrestha College Logo" style="max-height:80px; display:block; margin:0 auto 10px;"/>
                         <h2>Shrestha College</h2>
                         <h4>Student Report</h4>
                     </div>
