@@ -3,11 +3,17 @@ from odoo import fields, models
 
 class StudentSubject(models.Model):
     _name = 'student.subject'
-    _description = 'Student Subject'
+    _description = 'Student Course'
 
-    name = fields.Char(string='Subject Name', required=True)
+    name = fields.Char(string='Course Name', required=True)
     code = fields.Char(string='Subject Code')
-    course_id = fields.Many2one('student.course', string='Course')
+    department_ids = fields.Many2many(
+        'student.course',
+        'student_subject_department_rel',
+        'subject_id',
+        'course_id',
+        string='Departments',
+    )
     semester = fields.Selection(
         [
             ('1', 'Semester 1'),

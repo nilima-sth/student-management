@@ -1,6 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <template id="report_student_id_card_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page" style="display:flex;justify-content:center;">
+                    <IDCardTemplate width="300" height="450" aspect-ratio="2:3" alignment="center" color="#4A90E2" font-style="monospace"
+                        style="width:300px;height:450px;border:2px solid #4A90E2;border-radius:10px;padding:12px;box-sizing:border-box;font-family:monospace;color:#2b3a55;">
+
+                        <Header alignment="center" color="#4A90E2" font-style="monospace" style="text-align:center;">
+                            <Title alignment="center" color="#4A90E2" font-style="monospace"
+                                style="font-weight:700;font-size:16px;letter-spacing:0.5px;margin-bottom:10px;">STUDENT IDENTITY CARD</Title>
+
+                            <div style="display:flex;justify-content:space-between;gap:10px;align-items:stretch;margin-bottom:10px;">
+                                <LogoPlaceholder alignment="center" color="#4A90E2" font-style="monospace"
+                                    style="flex:1;border:1px solid #4A90E2;min-height:82px;display:flex;align-items:center;justify-content:center;">
+                                    <img src="/student_management/static/description/icon.png" alt="Institution Logo" style="max-width:56px;max-height:56px;"/>
+                                </LogoPlaceholder>
+                                <PhotoPlaceholder alignment="center" color="#4A90E2" font-style="monospace"
+                                    style="width:118px;height:145px;border:1px solid #4A90E2;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                                    <img t-if="o.image_1920" t-att-src="image_data_uri(o.image_1920)" alt="Student Photo" style="width:100%;height:100%;object-fit:cover;"/>
+                                    <span t-if="not o.image_1920" style="font-size:11px;color:#4A90E2;">STUDENT PHOTO</span>
+                                </PhotoPlaceholder>
+                            </div>
+                        </Header>
+
+                        <TopInfoGroup alignment="left" color="#4A90E2" font-style="monospace" style="font-size:12px;line-height:1.35;margin-bottom:8px;">
+                            <Field label="Name:" t-att-value="o.name"><strong>Name:</strong> <span t-esc="o.name"/></Field>
+                            <Field label="Address:" t-att-value="(', '.join(filter(None, [o.street, o.street2, o.city, o.zip])))">
+                                <strong>Address:</strong>
+                                <span t-esc="', '.join(filter(None, [o.street, o.street2, o.city, o.zip]))"/>
+                            </Field>
+                        </TopInfoGroup>
+
+                        <StudentDetails alignment="left" color="#4A90E2" font-style="monospace"
+                            style="border-top:1px solid #4A90E2;padding-top:8px;font-size:12px;line-height:1.4;">
+                            <Field label="Program:" t-att-value="', '.join(o.course_ids.mapped('name'))"><strong>Program:</strong> <span t-esc="', '.join(o.course_ids.mapped('name'))"/></Field>
+                            <Field label="Section:" t-att-value="o.section or ''"><strong>Section:</strong> <span t-esc="o.section or '-'"/></Field>
+                            <Field label="Roll No:" t-att-value="o.roll_no or ''"><strong>Roll No:</strong> <span t-esc="o.roll_no or '-'"/></Field>
+                            <Field label="Contact:" t-att-value="o.phone or o.mobile or ''"><strong>Contact:</strong> <span t-esc="o.phone or o.mobile or '-'"/></Field>
+                            <Field label="Address (Permanent):" t-att-value="(', '.join(filter(None, [o.street, o.street2, o.city, o.zip])))">
+                                <strong>Address (Permanent):</strong>
+                                <span t-esc="', '.join(filter(None, [o.street, o.street2, o.city, o.zip]))"/>
+                            </Field>
+                            <Field label="Email:" t-att-value="o.email or ''"><strong>Email:</strong> <span t-esc="o.email or '-'"/></Field>
+                            <Field label="Validity:" t-att-value="o.student_state or ''"><strong>Validity:</strong> <span t-esc="o.student_state or '-'"/></Field>
+                        </StudentDetails>
+
+                        <Footer style="margin-top:auto;padding-top:8px;">
+                            <FooterBar alignment="center" color="#4A90E2" font-style="monospace"
+                                style="height:6px;border-top:1px solid #4A90E2;"></FooterBar>
+                        </Footer>
+                    </IDCardTemplate>
+                </div>
+            </t>
+        </t>
+    </template>
+
     <template id="report_student_report_document">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
@@ -26,7 +82,7 @@
                     <table class="table table-sm" style="width:100%; border-collapse: collapse;">
                         <thead>
                             <tr>
-                                <th style="border: 1px solid #000; padding:4px;"><strong>Course</strong></th>
+                                <th style="border: 1px solid #000; padding:4px;"><strong>Department</strong></th>
                                 <th style="border: 1px solid #000; padding:4px;"><strong>Full Marks</strong></th>
                                 <th style="border: 1px solid #000; padding:4px;"><strong>Pass Marks</strong></th>
                                 <th style="border: 1px solid #000; padding:4px;"><strong>Obtained</strong></th>
@@ -74,6 +130,17 @@
         <field name="report_type">qweb-pdf</field>
         <field name="report_name">student_management.report_student_report_document</field>
         <field name="print_report_name">object.name</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"/>
+    </record>
+
+    <record id="report_student_id_card_action" model="ir.actions.report">
+        <field name="name">Student ID Card</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">student_management.report_student_id_card_document</field>
+        <field name="print_report_name">(object.name or 'Student') + ' - ID Card'</field>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_type">report</field>
         <field name="paperformat_id" ref="base.paperformat_euro"/>
     </record>
 

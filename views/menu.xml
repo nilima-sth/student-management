@@ -16,13 +16,13 @@
               sequence="20"/>
 
     <menuitem id="menu_course"
-              name="Courses"
+              name="Department"
               parent="menu_student_root"
               action="action_course"
               sequence="30"/>
 
     <menuitem id="menu_subject"
-              name="Subjects"
+              name="Courses"
               parent="menu_student_root"
               action="action_subject"
               sequence="40"/>
@@ -32,26 +32,14 @@
               parent="menu_student_root"
               sequence="50"/>
 
-    <menuitem id="menu_student_batch_bim"
-              name="BIM"
-              parent="menu_student_batch"
-              action="action_student_student_batch_bim"
-              sequence="10"/>
-
-    <menuitem id="menu_student_batch_csit"
-              name="CSIT"
-              parent="menu_student_batch"
-              action="action_student_student_batch_csit"
-              sequence="20"/>
-
     <menuitem id="menu_student_classroom"
-              name="Classrooms"
+              name="Batch"
               parent="menu_student_root"
               action="action_student_classroom"
               sequence="60"/>
 
     <menuitem id="menu_student_attendance"
-              name="Attendance"
+              name="Classroom"
               parent="menu_student_root"
               action="action_student_attendance"
               sequence="70"/>

@@ -14,7 +14,7 @@ class Student(models.Model):
         'student_course_rel',
         'student_id',
         'course_id',
-        string='Courses'
+        string='Department'
     )
     section = fields.Char(string='Section')
     subject_ids = fields.Many2many(
@@ -22,8 +22,8 @@ class Student(models.Model):
         'student_subject_rel',
         'student_id',
         'subject_id',
-        string='Subjects',
-        domain="[('course_id', 'in', course_ids)]",
+        string='Courses',
+        domain="[('department_ids', 'in', course_ids)]",
     )
     guardian_ids = fields.One2many('student.guardian', 'student_id', string='Guardians')
 

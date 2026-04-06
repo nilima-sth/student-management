@@ -7,10 +7,12 @@ class StudentAttendance(models.Model):
 
     name = fields.Char(string='Attendance Reference', required=True, default='New')
     date = fields.Datetime(string='Date & Time', default=fields.Datetime.now, required=True)
-    classroom_id = fields.Many2one('student.classroom', string='Classroom')
+    classroom_id = fields.Many2one('student.classroom', string='Batch')
+    room_number = fields.Char(string='Room Number')
+    department_id = fields.Many2one('student.course', string='Department', required=True)
     subject_id = fields.Many2one(
         'student.subject',
-        string='Subject',
+        string='Course',
         required=True,
     )
     teacher_id = fields.Many2one(
@@ -28,15 +30,16 @@ class StudentAttendance(models.Model):
             rec.present_count = sum(1 for line in rec.line_ids if line.present)
             rec.absent_count = len(rec.line_ids) - rec.present_count
 
-    @api.onchange('subject_id', 'classroom_id')
+    @api.onchange('department_id', 'subject_id', 'classroom_id')
     def _onchange_subject_or_classroom(self):
         for rec in self:
             rec.line_ids = [(5, 0, 0)]
-            if not rec.subject_id:
+            if not rec.department_id or not rec.subject_id:
                 continue
 
             domain = [
                 ('is_student', '=', True),
+                ('course_ids', 'in', rec.department_id.id),
                 ('subject_ids', 'in', rec.subject_id.id),
             ]
             if rec.classroom_id:

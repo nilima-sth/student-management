@@ -6,7 +6,6 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="program"/>
                 <field name="semesters_count"/>
                 <field name="fee_per_semester"/>
             </list>
@@ -17,11 +16,10 @@
         <field name="name">student.course.form</field>
         <field name="model">student.course</field>
         <field name="arch" type="xml">
-            <form string="Course">
+            <form string="Department">
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="program"/>
                         <field name="description"/>
                         <field name="semesters_count"/>
                         <field name="fee_per_semester"/>
@@ -31,49 +29,49 @@
                             <group>
                                 <field name="code" readonly="1"/>
                             </group>
-                            <field name="subject_ids" domain="[('semester', '=', '1')]" nolabel="1"/>
+                            <field name="sem1_subject_ids" nolabel="1"/>
                         </page>
                         <page string="Sem 2">
                             <group>
                                 <field name="code" readonly="1"/>
                             </group>
-                            <field name="subject_ids" domain="[('semester', '=', '2')]" nolabel="1"/>
+                            <field name="sem2_subject_ids" nolabel="1"/>
                         </page>
                         <page string="Sem 3">
                             <group>
                                 <field name="code" readonly="1"/>
                             </group>
-                            <field name="subject_ids" domain="[('semester', '=', '3')]" nolabel="1"/>
+                            <field name="sem3_subject_ids" nolabel="1"/>
                         </page>
                         <page string="Sem 4">
                             <group>
                                 <field name="code" readonly="1"/>
                             </group>
-                            <field name="subject_ids" domain="[('semester', '=', '4')]" nolabel="1"/>
+                            <field name="sem4_subject_ids" nolabel="1"/>
                         </page>
                         <page string="Sem 5">
                             <group>
                                 <field name="code" readonly="1"/>
                             </group>
-                            <field name="subject_ids" domain="[('semester', '=', '5')]" nolabel="1"/>
+                            <field name="sem5_subject_ids" nolabel="1"/>
                         </page>
                         <page string="Sem 6">
                             <group>
                                 <field name="code" readonly="1"/>
                             </group>
-                            <field name="subject_ids" domain="[('semester', '=', '6')]" nolabel="1"/>
+                            <field name="sem6_subject_ids" nolabel="1"/>
                         </page>
                         <page string="Sem 7">
                             <group>
                                 <field name="code" readonly="1"/>
                             </group>
-                            <field name="subject_ids" domain="[('semester', '=', '7')]" nolabel="1"/>
+                            <field name="sem7_subject_ids" nolabel="1"/>
                         </page>
                         <page string="Sem 8">
                             <group>
                                 <field name="code" readonly="1"/>
                             </group>
-                            <field name="subject_ids" domain="[('semester', '=', '8')]" nolabel="1"/>
+                            <field name="sem8_subject_ids" nolabel="1"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -88,13 +86,12 @@
             <search>
                 <field name="name"/>
                 <field name="code"/>
-                <field name="program"/>
             </search>
         </field>
     </record>
 
     <record id="action_course" model="ir.actions.act_window">
-        <field name="name">Courses</field>
+        <field name="name">Department</field>
         <field name="res_model">student.course</field>
         <field name="view_mode">list,form</field>
     </record>

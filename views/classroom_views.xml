@@ -5,10 +5,11 @@
         <field name="model">student.classroom</field>
         <field name="arch" type="xml">
             <kanban default_group_by="semester">
+                <field name="year"/>
                 <field name="program"/>
                 <field name="name"/>
                 <field name="semester"/>
-                <field name="class_teacher"/>
+                <field name="course_id"/>
                 <field name="student_count"/>
                 <templates>
                     <t t-name="card">
@@ -17,13 +18,13 @@
                                 <strong><field name="name"/></strong>
                             </div>
                             <div>
-                                Program: <field name="program"/>
+                                Year: <field name="year"/>
+                            </div>
+                            <div>
+                                Department: <field name="course_id"/>
                             </div>
                             <div>
                                 Semester: <field name="semester"/>
-                            </div>
-                            <div>
-                                Teacher: <field name="class_teacher"/>
                             </div>
                             <div>
                                 Students: <field name="student_count"/>
@@ -39,15 +40,14 @@
         <field name="name">student.classroom.form</field>
         <field name="model">student.classroom</field>
         <field name="arch" type="xml">
-            <form string="Classroom">
+            <form string="Batch">
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="program"/>
+                        <field name="year"/>
+                        <field name="course_id"/>
                         <field name="semester"/>
-                        <field name="course_id" domain="[('program', '=', program)]"/>
-                        <field name="class_teacher"/>
-                        <field name="subject_ids" widget="many2many_tags" domain="[('course_id', '=', course_id)]"/>
+                        <field name="subject_ids" widget="many2many_tags" domain="[('department_ids', 'in', [course_id]), ('semester', '=', semester)]"/>
                         <field name="student_count" readonly="1"/>
                     </group>
                     <group>
@@ -77,34 +77,15 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
-                <field name="program"/>
+                <field name="year"/>
                 <field name="semester"/>
                 <field name="course_id"/>
-                <field name="class_teacher"/>
             </search>
         </field>
     </record>
 
-    <record id="action_student_student_batch_bim" model="ir.actions.act_window">
-        <field name="name">BIM Batch</field>
-        <field name="res_model">student.classroom</field>
-        <field name="view_mode">kanban</field>
-        <field name="view_id" ref="view_student_classroom_kanban"/>
-        <field name="domain">[('program','=','bim')]</field>
-        <field name="search_view_id" ref="view_student_classroom_search"/>
-    </record>
-
-    <record id="action_student_student_batch_csit" model="ir.actions.act_window">
-        <field name="name">CSIT Batch</field>
-        <field name="res_model">student.classroom</field>
-        <field name="view_mode">kanban</field>
-        <field name="view_id" ref="view_student_classroom_kanban"/>
-        <field name="domain">[('program','=','csit')]</field>
-        <field name="search_view_id" ref="view_student_classroom_search"/>
-    </record>
-
     <record id="action_student_classroom" model="ir.actions.act_window">
-        <field name="name">Classrooms</field>
+        <field name="name">Batches</field>
         <field name="res_model">student.classroom</field>
         <field name="view_mode">kanban,form</field>
         <field name="view_id" ref="view_student_classroom_kanban"/>
