@@ -60,6 +60,14 @@
         </t>
     </template>
 
+    <record id="report_student_report_preview_action" model="ir.actions.report">
+        <field name="name">Student Report Preview</field>
+        <field name="model">student.report</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">student_management.report_student_report_document</field>
+        <field name="print_report_name">object.name</field>
+    </record>
+
     <record id="report_student_report_action" model="ir.actions.report">
         <field name="name">Student Report</field>
         <field name="model">student.report</field>
