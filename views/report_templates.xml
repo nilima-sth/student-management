@@ -4,49 +4,37 @@
     <template id="report_student_id_card_document">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="o">
-                <div class="page" style="display:flex;justify-content:center;padding-top:20px;">
-                    <div style="width:320px;min-height:520px;border:2px solid #2f69b1;border-radius:10px;background:#ffffff;box-sizing:border-box;font-family:monospace;color:#16365f;display:flex;flex-direction:column;overflow:hidden;">
-                        <div style="padding:14px 14px 10px 14px;border-bottom:2px solid #2f69b1;">
-                            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
-                                <div style="flex:1;">
-                                    <div style="font-size:17px;font-weight:700;letter-spacing:0.4px;">STUDENT ID CARD</div>
-                                    <div style="font-size:12px;margin-top:2px;">Student Management</div>
-                                </div>
-                                  <div style="width:54px;height:54px;border:1px solid #2f69b1;padding:3px;box-sizing:border-box;border-radius:6px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#ffffff;">
-                                     <img t-if="o.company_id and o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Institution Logo"
-                                         style="width:100%;height:100%;object-fit:contain;"/>
-                                     <span t-if="not (o.company_id and o.company_id.logo)" style="font-size:9px;color:#2f69b1;text-align:center;line-height:1.1;">LOGO</span>
-                                  </div>
-                            </div>
+                <div style="width:85mm;height:55mm;border:1.6px solid #2f69b1;border-radius:4px;background:#ffffff;box-sizing:border-box;font-family:monospace;color:#16365f;display:flex;flex-direction:column;overflow:hidden;page-break-inside:avoid;break-inside:avoid;">
+                    <div style="padding:2.2mm 3mm 1.8mm 3mm;border-bottom:1.2px solid #2f69b1;display:flex;justify-content:space-between;align-items:flex-start;gap:2mm;">
+                        <div style="flex:1;min-width:0;">
+                            <div style="font-size:4.6mm;font-weight:700;line-height:1;letter-spacing:0.2px;">STUDENT ID CARD</div>
+                            <div style="font-size:2.8mm;line-height:1.1;margin-top:1mm;">Student Management</div>
                         </div>
-
-                        <div style="padding:12px 14px;display:flex;gap:18px;align-items:flex-start;">
-                            <div style="min-width:96px;width:96px;height:112px;border:2px solid #2f69b1;border-radius:6px;overflow:hidden;background:#f5f9ff;">
-                                <img t-if="o.image_1920" t-att-src="image_data_uri(o.image_1920)" alt="Student Photo"
-                                     style="width:100%;height:100%;object-fit:cover;"/>
-                                <div t-if="not o.image_1920" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:10px;color:#2f69b1;">PHOTO</div>
-                            </div>
-                            <div style="flex:1;min-width:150px;font-size:12px;line-height:1.6;">
-                                <div style="margin-bottom:4px;"><strong>Name:</strong> <span t-esc="o.name or '-'"/></div>
-                                <div style="margin-bottom:4px;"><strong>Roll No:</strong> <span t-esc="o.roll_no or '-'"/></div>
-                                <div style="margin-bottom:4px;"><strong>Program:</strong> <span t-esc="', '.join(o.course_ids.mapped('name')) or '-'"/></div>
-                                <div style="margin-bottom:4px;"><strong>Section:</strong> <span t-esc="o.section or '-'"/></div>
-                                <div><strong>Batch:</strong> <span t-esc="o.classroom_id.name if o.classroom_id else '-'"/></div>
-                            </div>
+                        <div style="width:10mm;height:10mm;border:1px solid #2f69b1;padding:1mm;box-sizing:border-box;border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#ffffff;">
+                            <img t-if="o.company_id and o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" alt="Institution Logo"
+                                 style="width:100%;height:100%;object-fit:contain;"/>
+                            <span t-if="not (o.company_id and o.company_id.logo)" style="font-size:2.2mm;color:#2f69b1;text-align:center;line-height:1;">LOGO</span>
                         </div>
+                    </div>
 
-                        <div style="border-top:1px solid #2f69b1;"></div>
-
-                        <div style="padding:12px 14px 10px 14px;font-size:12px;line-height:1.5;flex:1;">
-                            <div><strong>Contact:</strong> <span t-esc="o.phone or o.mobile or '-'"/></div>
-                            <div><strong>Email:</strong> <span t-esc="o.email or '-'"/></div>
-                            <div><strong>Address:</strong> <span t-esc="', '.join(filter(None, [o.street, o.street2, o.city, o.zip])) or '-'"/></div>
-                            <div><strong>Validity:</strong> <span t-esc="o.student_state or '-'"/></div>
+                    <div style="padding:2mm 3mm;display:flex;gap:2.2mm;align-items:flex-start;flex:1;min-height:0;">
+                        <div style="width:18mm;min-width:18mm;height:22mm;border:1.2px solid #2f69b1;border-radius:2px;overflow:hidden;background:#f5f9ff;">
+                            <img t-if="o.image_1920" t-att-src="image_data_uri(o.image_1920)" alt="Student Photo"
+                                 style="width:100%;height:100%;object-fit:cover;"/>
+                            <div t-if="not o.image_1920" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.4mm;color:#2f69b1;">PHOTO</div>
                         </div>
-
-                        <div style="padding:8px 14px;border-top:1px solid #2f69b1;background:#2f69b1;color:#ffffff;text-align:center;font-size:11px;">
-                            www.yourcollege.edu
+                        <div style="flex:1;min-width:0;font-size:2.9mm;line-height:1.25;">
+                            <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><strong>Name:</strong> <span t-esc="o.name or '-'"/></div>
+                            <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><strong>Roll:</strong> <span t-esc="o.roll_no or '-'"/></div>
+                            <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><strong>Program:</strong> <span t-esc="', '.join(o.course_ids.mapped('name')) or '-'"/></div>
+                            <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><strong>Section:</strong> <span t-esc="o.section or '-'"/></div>
+                            <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><strong>Batch:</strong> <span t-esc="o.classroom_id.name if o.classroom_id else '-'"/></div>
+                            <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><strong>Contact:</strong> <span t-esc="o.phone or o.mobile or '-'"/></div>
                         </div>
+                    </div>
+
+                    <div style="padding:1.8mm 3mm;border-top:1px solid #2f69b1;background:#2f69b1;color:#ffffff;text-align:center;font-size:2.7mm;line-height:1;">
+                        www.yourcollege.edu
                     </div>
                 </div>
             </t>
@@ -112,6 +100,28 @@
         </t>
     </template>
 
+    <record id="paperformat_student_id_card" model="report.paperformat">
+        <field name="name">Student ID Card Format</field>
+        <field name="format">custom</field>
+        <field name="page_width">85</field>
+        <field name="page_height">55</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">0</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+    </record>
+
+    <record id="report_student_id_card_preview_action" model="ir.actions.report">
+        <field name="name">Student ID Card Preview</field>
+        <field name="model">res.partner</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">student_management.report_student_id_card_document</field>
+        <field name="print_report_name">(object.name or 'Student') + ' - ID Card'</field>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_type">report</field>
+    </record>
+
     <record id="report_student_report_preview_action" model="ir.actions.report">
         <field name="name">Student Report Preview</field>
         <field name="model">student.report</field>
@@ -137,7 +147,7 @@
         <field name="print_report_name">(object.name or 'Student') + ' - ID Card'</field>
         <field name="binding_model_id" ref="base.model_res_partner"/>
         <field name="binding_type">report</field>
-        <field name="paperformat_id" ref="base.paperformat_euro"/>
+        <field name="paperformat_id" ref="student_management.paperformat_student_id_card"/>
     </record>
 
 </odoo>
