@@ -70,6 +70,15 @@
                         </form>
                     </field>
                 </page>
+                <page string="Attendance" name="attendance" invisible="not is_student">
+                    <field name="attendance_line_ids">
+                        <tree create="false" delete="false">
+                            <field name="attendance_id"/>
+                            <field name="present"/>
+                            <field name="remarks"/>
+                        </tree>
+                    </field>
+                </page>
             </xpath>
 
             <xpath expr="//sheet" position="before">

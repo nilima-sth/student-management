@@ -39,7 +39,7 @@
               sequence="60"/>
 
     <menuitem id="menu_student_attendance"
-              name="Classroom"
+              name="Attendance"
               parent="menu_student_root"
               action="action_student_attendance"
               sequence="70"/>

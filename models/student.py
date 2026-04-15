@@ -1,6 +1,4 @@
 from odoo import api, fields, models
-
-
 class Student(models.Model):
     _inherit = 'res.partner'
     _description = 'Student Record'
@@ -9,6 +7,16 @@ class Student(models.Model):
     date_of_birth = fields.Date(string='Date of Birth')
     age = fields.Integer(string='Age', compute='_compute_age', store=True)
     enrollment_date = fields.Date(string='Enrollment Date', default=fields.Date.today)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     course_ids = fields.Many2many(
         'student.course',
         'student_course_rel',
@@ -26,6 +34,11 @@ class Student(models.Model):
         domain="[('department_ids', 'in', course_ids)]",
     )
     guardian_ids = fields.One2many('student.guardian', 'student_id', string='Guardians')
+    attendance_line_ids = fields.One2many(
+        'student.attendance.line',
+        'student_id',
+        string='Attendance Records',
+    )
 
     student_state = fields.Selection([
         ('draft', 'Draft'),
