@@ -1,75 +1,135 @@
-# Student Management (Odoo 19)
+# 🎓 Student Management System (Odoo 19)
 
-This module adds a complete student administration app in Odoo, built on top of `res.partner`.
+The **Student Management System (SMS)** module provides a complete student administration solution in Odoo 19. It is built on top of the existing `res.partner` model, extending Contacts to manage students efficiently.
 
-## Features
+---
 
-- Student profile management (extends contacts):
-  - Date of birth and computed age
-  - Enrollment date
-  - Student lifecycle stage (draft, documents pending, approved, admitted, active, alumni, cancelled)
-  - Quick actions: admit, mark alumni, cancel student
-- Course management:
-  - Course name, code, description, duration, fee
-  - Student-course many-to-many enrollment
-- Guardian management:
-  - Link guardians to students with relationship type
-  - Contact fields (phone, email, address)
-- Classroom management:
-  - Semester-based classrooms
-  - Class teacher assignment
-  - Subject/course mapping
-  - Student count computation
-- Attendance management:
-  - Attendance header with date, class, and teacher
-  - Auto-populated attendance lines from selected classroom
-  - Present/absent counters
-- Student report cards:
-  - Per-student report records
-  - Subject-wise lines with full marks, pass marks, obtained marks
-  - Pass/fail boolean per line
-  - Computed total obtained marks
+## 🚀 Key Features
 
-## Main Models
+### 👩‍🎓 Student Profile Management  
+*(Extends Odoo Contacts)*
 
-- `res.partner` (extended): student flags and classroom assignment
-- `student.course`
-- `student.guardian`
-- `student.classroom`
-- `student.attendance`
-- `student.attendance.line`
-- `student.report`
-- `student.report.line`
+- Date of Birth with **computed age**
+- Enrollment date tracking
+- Student lifecycle stages:
+  - Draft  
+  - Documents Pending  
+  - Approved  
+  - Admitted  
+  - Active  
+  - Alumni  
+  - Cancelled  
+- Quick action buttons:
+  - Admit student  
+  - Mark as Alumni  
+  - Cancel student  
 
-## Dependencies
+---
 
-From `__manifest__.py`:
+### 📚 Course Management
+
+- Course name, code, description
+- Duration and fee configuration
+- Many-to-many student-course enrollment relationship
+
+---
+
+### 👨‍👩‍👧 Guardian Management
+
+- Link guardians to students
+- Define relationship type (e.g., Father, Mother, Guardian)
+- Contact details:
+  - Phone  
+  - Email  
+  - Address  
+
+---
+
+### 🏫 Classroom Management
+
+- Semester-based classroom structure
+- Assign class teacher
+- Map subjects/courses to classrooms
+- Automatically computed student count
+
+---
+
+### 🗓️ Attendance Management
+
+- Attendance header:
+  - Date  
+  - Classroom  
+  - Teacher  
+- Automatically generated attendance lines based on selected classroom students
+- Computed counters:
+  - Total Present  
+  - Total Absent  
+
+---
+
+### 📝 Student Report Cards
+
+- Individual student report records
+- Subject-wise report lines including:
+  - Full marks  
+  - Pass marks  
+  - Obtained marks  
+- Automatic pass/fail status per subject
+- Computed total obtained marks
+
+---
+
+## 🧩 Main Models
+
+| Model | Description |
+|-------|------------|
+| `res.partner` (extended) | Student flags, lifecycle stage, classroom assignment |
+| `student.course` | Course management |
+| `student.guardian` | Guardian-student relationship |
+| `student.classroom` | Classroom and semester management |
+| `student.attendance` | Attendance header |
+| `student.attendance.line` | Attendance details per student |
+| `student.report` | Student report card |
+| `student.report.line` | Subject-wise marks |
+
+---
+
+## 📦 Dependencies
+
+Defined in `__manifest__.py`:
 
 - `base`
 - `contacts`
 - `account`
 - `web_map`
 
-## Menus
+---
 
-The module adds a top-level **Student Management** app with menus for:
+## 🗂️ Menus
 
-- Students
-- Courses
-- Guardians
-- Classrooms
-- Attendance
-- Report Cards
+Adds a top-level **Student Management** application with the following menus:
 
-## Installation
+- Students  
+- Courses  
+- Guardians  
+- Classrooms  
+- Attendance  
+- Report Cards  
 
-1. Put this addon inside your Odoo custom addons path.
-2. Update the app list from Odoo Apps.
-3. Search for `SMS` (Student Management System).
-4. Install the module.
+---
 
-## Notes
+## ⚙️ Installation
 
-- Student records are contacts (`res.partner`) with `is_student = True`.
-- Attendance lines are generated from classroom students when classroom changes.
-- Access rights are defined in `security/ir.model.access.csv`.
+1. Place the module inside your custom addons path.
+2. Update the Apps list in Odoo.
+3. Search for **SMS – Student Management System**.
+4. Click **Install**.
+
+---
+
+## 📌 Technical Notes
+
+- Students are stored as `res.partner` records with `is_student = True`.
+- Attendance lines are auto-generated when a classroom is selected.
+- Access rights are configured in `security/ir.model.access.csv`.
+- Age, student count, attendance counters, and total marks are computed fields.
